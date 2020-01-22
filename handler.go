@@ -16,6 +16,7 @@ func handleGet(w http.ResponseWriter, r *http.Request) {
 	_, err := os.Stat(c.file)
 	if err != nil {
 		http.Error(w, "file not found", http.StatusNotFound)
+		return;
 	}
 
 	http.ServeFile(w, r, c.file)
