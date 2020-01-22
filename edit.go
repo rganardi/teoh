@@ -108,22 +108,31 @@ textarea:hover, button:hover {
 			}
 
 			status.innerText = 'sending'
-			const response = await fetch('/', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'text/plain',
-				},
-				body,
-			}, { signal: controller.signal })
 
-			textarea.value = await response.text();
-			status.innerText = 'done'
-
-			setTimeout(() => {
-				if (status.innerText === 'done') {
-					status.innerText = ''
+			try {
+				const response = await fetch('/', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'text/plain',
+					},
+					body,
+				}, { signal: controller.signal })
+				if (!response.ok) {
+					throw new Error(response.statusText);
 				}
-			}, 2000);
+
+				textarea.value = await response.text();
+				status.innerText = 'done'
+
+				setTimeout(() => {
+					if (status.innerText === 'done') {
+						status.innerText = ''
+					}
+				}, 2000);
+			} catch (err) {
+				console.error(err);
+				status.innerText = 'error sending file'
+			}
 		}
 
 		refresh();
