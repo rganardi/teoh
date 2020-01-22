@@ -63,7 +63,7 @@ textarea:hover, button:hover {
 		<span id='status'></span>
 		<br>
 		<button id='refresh' onclick='refresh()'>
-			Refresh
+			Fetch
 		</button>
 		<button id='submit' onclick='submit()'>
 			Send
