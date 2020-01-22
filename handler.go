@@ -8,12 +8,8 @@ import (
 )
 
 func handleEdit(w http.ResponseWriter, r *http.Request) {
-	_, err := os.Stat("./edit.html")
-	if err != nil {
-		http.Error(w, "file not found", http.StatusNotFound)
-	}
-
-	http.ServeFile(w, r, "./edit.html")
+	w.Header().Add("Content-Type", "text/html")
+	w.Write(template)
 }
 
 func handleGet(w http.ResponseWriter, r *http.Request) {
