@@ -1,7 +1,10 @@
+package main
+
+var (
+	template = []byte(`
 <html>
 	<head>
 <style>
-
 body {
 	margin:1em auto;
 	width:100vw;
@@ -73,15 +76,24 @@ textarea:hover, button:hover {
 
 		const get = async () => {
 			status.innerText = 'fetching'
-			const result = await fetch('/').then(r => r.text());
-			status.innerText = 'done'
-			setTimeout(() => {
-				if (status.innerText === 'done') {
-					status.innerText = ''
+			try {
+				const response = await fetch('/');
+				if (!response.ok) {
+					throw new Error(response.statusText);
 				}
-			}, 2000);
+				status.innerText = 'done'
+				setTimeout(() => {
+					if (status.innerText === 'done') {
+						status.innerText = ''
+					}
+				}, 2000);
 
-			return result;
+				return await response.text();
+			} catch (err) {
+				console.error(err);
+				status.innerText = 'error fetching file'
+				return '';
+			}
 		}
 
 		const refresh = async () => {
@@ -119,3 +131,5 @@ textarea:hover, button:hover {
 	</script>
 	</body>
 </html>
+`)
+)
