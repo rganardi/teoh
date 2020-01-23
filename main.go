@@ -14,7 +14,7 @@ type config struct {
 }
 
 var (
-	c config
+	c        config
 	fileLock lock
 )
 
@@ -31,7 +31,11 @@ func main() {
 		return
 	}
 
-	c.file = fmt.Sprintf("%s/%s", dir, os.Args[1])
+	if os.Args[1][0] == '/' {
+		c.file = os.Args[1]
+	} else {
+		c.file = fmt.Sprintf("%s/%s", dir, os.Args[1])
+	}
 
 	port, ok := os.LookupEnv("PORT")
 	if !ok {
