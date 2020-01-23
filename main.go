@@ -10,6 +10,7 @@ import (
 type config struct {
 	file string
 	wd   string
+	port string
 }
 
 var (
@@ -32,8 +33,14 @@ func main() {
 
 	c.file = fmt.Sprintf("%s/%s", dir, os.Args[1])
 
+	port, ok := os.LookupEnv("PORT")
+	if !ok {
+		port = "80"
+	}
+	c.port = port
+
 	server := &http.Server{
-		Addr:           ":8080",
+		Addr:           ":" + c.port,
 		MaxHeaderBytes: 1 << 32,
 	}
 
