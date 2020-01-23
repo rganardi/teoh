@@ -4,6 +4,7 @@ var (
 	template = []byte(`
 <html>
 	<head>
+	<title>teoh</title>
 <style>
 body {
 	margin:1em auto;
@@ -58,6 +59,7 @@ textarea:hover, button:hover {
 </style>
 	</head>
 	<body>
+		<b>teoh</b> - text editor over http
 		<div id='container'>
 		<textarea id='file' cols='72' rows='20'></textarea>
 		<span id='status'></span>
