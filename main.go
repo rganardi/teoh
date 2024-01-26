@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"os"
 )
@@ -47,6 +48,28 @@ func main() {
 		Addr:           ":" + c.port,
 		MaxHeaderBytes: 1 << 32,
 	}
+
+	mode := "http"
+	ifaces, err := net.Interfaces()
+	if err != nil {
+		log.Printf("Can't get interfaces\n")
+	} else {
+		for _, iface := range ifaces {
+			addrs, err := iface.Addrs()
+			if err != nil {
+				log.Printf("%s: Can't get addresses\n", iface)
+				continue
+			}
+			for _, addr := range addrs {
+				ip := (addr).(*net.IPNet).IP
+				if ip.IsLoopback() {
+					break
+				}
+				log.Printf("Ready at %s://%s:%s\n", mode, ip, port)
+			}
+		}
+	}
+	log.Printf("Ready at %s://%s:%s\n", mode, "localhost", port)
 
 	router := getRouter()
 	http.Handle("/", router)
